@@ -98,7 +98,8 @@ io.on('connection', (socket) => {
 app.use(express.static('public'));
 
 // Configuración del servidor MQTT
-const brokerUrl = 'mqtt://201.188.233.127:1883'; // Dirección del broker MQTT
+const brokerUrl = 'mqtt://renderhp-hpz440.netbird.cloud:1883'; // Dirección del broker MQTT
+
 
 // Conectamos al broker MQTT
 const client = mqtt.connect(brokerUrl);
