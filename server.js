@@ -98,7 +98,7 @@ io.on('connection', (socket) => {
 app.use(express.static('public'));
 
 // Configuración del servidor MQTT
-const brokerUrl = 'mqtt://100.92.143.9:1883';
+const brokerUrl = 'mqtt://mesh.testmzpt.xyz:1883'; // Dirección del broker MQTT con el DNS personalizado
 
 
 
