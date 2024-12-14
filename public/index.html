@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página Principal - Innova UTEM</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+    <a class="navbar-brand text-white" href="#">Innova UTEM</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="/">Página Principal</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="/map.html">Trackeo</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="/ubicacion.html">Ubicación</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="/mensajes.html">Mensajes</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-container">
+          <form id="topicForm">
+            <label for="newTopic" style="font-weight: bold;">Agregar Usuario:</label>
+            <input type="text" id="newTopic" name="newTopic" class="form-control mb-2" required placeholder="ID (E.j., !f71e36d4)">
+            <button type="submit" class="btn btn-primary btn-block">Agregar</button>
+          </form>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-container">
+          <form id="unsubscribeForm">
+            <label for="removeTopic" style="font-weight: bold;">Remover Usuario:</label>
+            <input type="text" id="removeTopic" name="removeTopic" class="form-control mb-2" required placeholder="ID (E.j., !f71e36d4)">
+            <button type="submit" class="btn btn-danger btn-block">Remover</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nueva sección para mostrar los dispositivos registrados -->
+    <div class="row mt-4">
+      <div class="col-12">
+        <h2>Dispositivos Registrados</h2>
+        <ul id="devices" class="list-group">
+          <!-- Aquí se mostrarán los dispositivos -->
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hacer una solicitud GET para obtener los dispositivos registrados
+    fetch('/api/devices')
+      .then(response => response.json())
+      .then(devices => {
+        const deviceList = document.getElementById('devices');
+        
+        // Limpiar la lista
+        deviceList.innerHTML = '';
+
+        // Iterar sobre los dispositivos y agregarlos a la lista
+        devices.forEach(device => {
+          const listItem = document.createElement('li');
+          listItem.className = "list-group-item";
+          listItem.textContent = `ID: ${device.id}, Nombre: ${device.name}`;
+          deviceList.appendChild(listItem);
+        });
+      })
+      .catch(error => {
+        console.error('Error al obtener los dispositivos:', error);
+      });
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa/Opciones - Innova UTEM</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="script.js" defer></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+  <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+</head>
+<body>
+  
+  <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+    <a class="navbar-brand text-white" href="#">Innova UTEM</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="/">Página Principal</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="/map.html">Trackeo</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="/ubicacion.html">Ubicación</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="/mensajes.html">Mensajes</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="sidebar p-3 bg-white border-left">
+          <h3>Historial de trackeo del dispositivo</h3>
+          <div class="history-container row">
+            <div class="col-md-4">
+              <label for="historyDeviceId">Dispositivos</label>
+              <!-- Cambiado el input de texto por un select -->
+              <select id="historyDeviceId" class="form-control mb-2">
+                <option value="">Seleccionar Dispositivo</option>
+                <!-- Las opciones de dispositivos se agregarán dinámicamente aquí -->
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="startDateTime">Fecha y Hora de Inicio</label>
+              <input type="datetime-local" id="startDateTime" class="form-control mb-2" />
+            </div>
+            <div class="col-md-4">
+              <label for="endDateTime">Fecha y Hora de Fin</label>
+              <input type="datetime-local" id="endDateTime" class="form-control mb-2" />
+            </div>
+          </div>
+          <button id="trackHistoryButton" class="btn btn-primary">Ver Trackeo</button>
+          <!-- Agregar el botón Reset -->
+          <button id="resetMapButton" class="btn btn-danger">Resetear Mapa</button>
+
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div id="mapContainer">
+          <div id="map"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Función para poblar el select con solo los IDs de los dispositivos
+    fetch('/api/devices')
+      .then(response => response.json())
+      .then(devices => {
+        const selectElement = document.getElementById('historyDeviceId');
+        
+        // Iterar sobre los dispositivos y agregar solo el ID al select
+        devices.forEach(device => {
+          const option = document.createElement('option');
+          option.value = device.id; // Usar solo el ID del dispositivo como valor
+          option.textContent = device.id; // Mostrar solo el ID
+          selectElement.appendChild(option);
+        });
+      })
+      .catch(error => {
+        console.error('Error al obtener los dispositivos:', error);
+      });
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
